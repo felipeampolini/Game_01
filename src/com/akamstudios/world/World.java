@@ -6,6 +6,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.akamstudios.entities.*;
+
+import com.akamstudios.main.Game;
+
 public class World {
 	
 	private Tile[] tiles;
@@ -23,21 +27,47 @@ public class World {
 				for(int yy =0; yy< map.getHeight(); yy++) {
 					int pixelAtual = pixels[xx + (yy*map.getWidth())];
 					
-					tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
-
+					tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);	
 					
-					if(pixelAtual == 0xFF000000) {
-						//Chão
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
-					}else if(pixelAtual == 0xFFFFFFFF) {
-						//parede
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_WALL);
-					}else if(pixelAtual == 0xFF0026FF) {
-						//player
+					switch(pixelAtual) {
+						case 0xFF000000:
+							tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
+							break;
+							
+						case 0xFFFFFFFF:
+							tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_WALL);
+							break;
+							
+						case 0xFF0026FF:
+							//player
+							Game.player.setX(xx*16);
+							Game.player.setY(yy*16);
+							break;
 						
-					}else if() {
-						
+						case 0xFFFF0000:
+							//enemy
+							Game.entities.add(new Enemy(xx*16, yy*16, 16, 16, Entity.ENEMY_EN));
+							break;
+							
+						case 0xFFFF6A00:
+							//weapon
+							Game.entities.add(new Weapon(xx*16, yy*16, 16, 16, Entity.WEAPON_EN));
+							break;
+							
+						case 0xFFFF7F7F:
+							//Life pack
+							Game.entities.add(new Lifepack(xx*16, yy*16, 16, 16, Entity.LIFEPACK_EN));
+							break;
+							
+						case 0xFFFFD800:
+							//ammo
+							Game.entities.add(new Ammo(xx*16, yy*16, 16, 16, Entity.AMMO_EN));
+							break;
+							
+						default:
+							tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);										
 					}
+					
 				}
 			}
 		} catch (IOException e) {
