@@ -89,7 +89,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 	}
 		
-	
 	public void render() {
 		BufferStrategy bs = this.getBufferStrategy();
 		if(bs == null) {
@@ -124,6 +123,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		double delta = 0;
 		int frames = 0;
 		double timer = System.currentTimeMillis();
+		requestFocus();
 		while(isRunning) {
 			long now = System.nanoTime();
 			delta+= (now - lastTime) / ns; 
