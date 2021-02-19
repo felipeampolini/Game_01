@@ -49,7 +49,9 @@ public class World {
 						
 						case 0xFFFF0000:
 							//enemy
-							Game.entities.add(new Enemy(xx*16, yy*16, 16, 16, Entity.ENEMY_EN));
+							Enemy en = new Enemy(xx*16, yy*16, 16, 16, Entity.ENEMY_EN);
+							Game.entities.add(en);
+							Game.enemies.add(en);
 							break;
 							
 						case 0xFFFF6A00:
