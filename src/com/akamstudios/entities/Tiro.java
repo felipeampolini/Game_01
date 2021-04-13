@@ -9,13 +9,13 @@ import com.akamstudios.world.Camera;
 
 public class Tiro extends Entity{
 	
-	private int dx;
-	private int dy;
+	private double dx;
+	private double dy;
 	private double spd = 4;
 
 	private int life = 100, curlife = 0;
 	
-	public Tiro(int x, int y, int width, int height, BufferedImage sprite, int dx, int dy) {
+	public Tiro(int x, int y, int width, int height, BufferedImage sprite, double dx, double dy) {
 		super(x, y, width, height, sprite);
 		this.dx = dx;
 		this.dy = dy;

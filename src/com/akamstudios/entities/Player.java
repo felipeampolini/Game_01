@@ -29,11 +29,12 @@ public class Player extends Entity {
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
 	
-	public boolean tiro = false;
+	public boolean tiro = false, mouseTiro = false;
 	
 	public boolean imortal = true;
 	
 	public double life = 100, maxLife = 100;
+	public int mx, my;
 	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -113,6 +114,37 @@ public class Player extends Entity {
 				Tiro tiro = new Tiro(this.getX()+px, this.getY()+py, 3, 3, null, dx , 0);
 				Game.tiros.add(tiro);
 			}
+		}
+		
+		if(mouseTiro) {
+						
+			mouseTiro = false;
+			
+//			if(arma && ammo > 0) {
+				ammo--;
+				//Criar bala e atirar
+				double angle = 0;
+	
+				int px = 7, py = 7;
+				
+				if(dir == right_dir) {
+					px = 7;
+					angle = Math.atan2(my - (this.getY()+7 - Camera.y), mx - (this.getX()+7 - Camera.x));
+				}else {
+					px = 7;
+					angle = Math.atan2(my - (this.getY()+7 - Camera.y), mx - (this.getX()+7 - Camera.x));
+				}
+					
+				//CONTINUAR
+				//https://cursos.dankicode.com/campus/curso-dev-games/atirando-com-o-mouse
+				//16:29
+				
+				double dx = Math.cos(angle);
+				double dy = Math.sin(angle);
+				
+				Tiro tiro = new Tiro(this.getX()+px, this.getY()+py, 3, 3, null, dx , dy);
+				Game.tiros.add(tiro);
+//			}
 		}
 		
 		if(life <= 0) {

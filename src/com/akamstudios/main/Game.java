@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -21,9 +23,10 @@ import com.akamstudios.entities.Player;
 import com.akamstudios.entities.Tiro;
 import com.akamstudios.graficos.Spritesheet;
 import com.akamstudios.graficos.UI;
+import com.akamstudios.world.Camera;
 import com.akamstudios.world.World;
 
-public class Game extends Canvas implements Runnable, KeyListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	public static JFrame frame;
@@ -54,6 +57,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public Game() {
 		rand = new Random();
 		addKeyListener(this); 
+		addMouseListener(this);
 		this.setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos.
@@ -228,6 +232,38 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		player.mouseTiro = true;
+		player.mx = (e.getX()/3);
+		player.my = (e.getY()/3);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
