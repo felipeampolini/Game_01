@@ -3,6 +3,7 @@ package com.akamstudios.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -17,6 +18,7 @@ import javax.swing.JFrame;
 import com.akamstudios.entities.Enemy;
 import com.akamstudios.entities.Entity;
 import com.akamstudios.entities.Player;
+import com.akamstudios.entities.Tiro;
 import com.akamstudios.graficos.Spritesheet;
 import com.akamstudios.graficos.UI;
 import com.akamstudios.world.World;
@@ -37,6 +39,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
+	public static List<Tiro> tiros;
+	
 	public static Spritesheet spritesheet;
 	
 	public static World world;
@@ -57,6 +61,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
+		tiros = new ArrayList<Tiro>();
+		
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
@@ -98,6 +104,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			Entity e = entities.get(i);
 			e.tick();
 		}
+		
+		for(int i =0; i < tiros.size(); i++) {
+			tiros.get(i).tick();
+		}
 	}
 		
 	public void render() {
@@ -119,6 +129,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			e.render(g);
 		}
 		
+		for(int i =0; i < tiros.size(); i++) {
+			tiros.get(i).render(g);
+		}
+		
 		ui.render(g);
 		
 		/*Fim renderizacao do jogo*/
@@ -126,6 +140,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
+		g.setColor(Color.white);
+		g.setFont(new Font("arial", Font.BOLD, 20));
+		g.drawString("Munição: "+ player.ammo, 600, 20);
 		bs.show();
 	}
 	
@@ -177,6 +194,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
 				e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
 		}	
+		
+		if(e.getKeyCode() == KeyEvent.VK_X) {
+			player.tiro = true;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_O) {
+			player.imortal = !player.imortal;
+		}
 		
 	}
 

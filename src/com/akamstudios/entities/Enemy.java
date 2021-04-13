@@ -52,12 +52,9 @@ public class Enemy extends Entity{
 			//perto do player
 			
 			if(Game.rand.nextInt(100) < 10) {
-				Game.player.life-=Game.rand.nextInt(3);
-				System.out.println("Vida: "+Game.player.life);
-				
-				
-				if(Game.player.life <= 0) {
-					System.exit(1);
+				if(!Game.player.imortal) {
+					Game.player.life-=Game.rand.nextInt(3);
+					Game.player.isDamaged = true;
 				}
 			}
 			

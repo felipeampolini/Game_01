@@ -61,7 +61,8 @@ public class World {
 							
 						case 0xFFFF7F7F:
 							//Life pack
-							Game.entities.add(new Lifepack(xx*16, yy*16, 16, 16, Entity.LIFEPACK_EN));
+							Lifepack pack = new Lifepack(xx*16, yy*16, 16, 16, Entity.LIFEPACK_EN);
+							Game.entities.add(pack);
 							break;
 							
 						case 0xFFFFD800:
