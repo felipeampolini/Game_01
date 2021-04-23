@@ -32,6 +32,7 @@ public class Player extends Entity {
 	public boolean tiro = false, mouseTiro = false;
 	
 	public boolean imortal = true;
+	public boolean municaoInfinita = true;
 	
 	public double life = 100, maxLife = 100;
 	public int mx, my;
@@ -97,7 +98,22 @@ public class Player extends Entity {
 		if(tiro) {
 			tiro = false;
 			
-			if(arma && ammo > 0) {
+			if(municaoInfinita) {
+				//Criar bala e atirar
+				int dx = 0;
+				int px = 0;
+				int py = 7;
+				if(dir == right_dir) {
+					px = 7;
+					dx = 1;
+				}else {
+					px = 7;
+					dx = -1;
+				}
+				
+				Tiro tiro = new Tiro(this.getX()+px, this.getY()+py, 3, 3, null, dx , 0);
+				Game.tiros.add(tiro);
+			}else if(arma && ammo > 0) {
 				ammo--;
 				//Criar bala e atirar
 				int dx = 0;
@@ -114,13 +130,35 @@ public class Player extends Entity {
 				Tiro tiro = new Tiro(this.getX()+px, this.getY()+py, 3, 3, null, dx , 0);
 				Game.tiros.add(tiro);
 			}
+		
 		}
 		
 		if(mouseTiro) {
 						
 			mouseTiro = false;
 			
-//			if(arma && ammo > 0) {
+			if(municaoInfinita) {
+				
+				//Criar bala e atirar
+				double angle = 0;
+	
+				int px = 7, py = 7;
+				
+				if(dir == right_dir) {
+					px = 7;
+					angle = Math.atan2(my - (this.getY()+py - Camera.y), mx - (this.getX()+px - Camera.x));
+				}else {
+					px = 7;
+					angle = Math.atan2(my - (this.getY()+py - Camera.y), mx - (this.getX()+px - Camera.x));
+				}
+				
+				double dx = Math.cos(angle);
+				double dy = Math.sin(angle);
+				
+				Tiro tiro = new Tiro(this.getX()+px, this.getY()+py, 3, 3, null, dx , dy);
+				Game.tiros.add(tiro);
+				
+			}else if(arma && ammo > 0) {
 				ammo--;
 				//Criar bala e atirar
 				double angle = 0;
@@ -129,34 +167,22 @@ public class Player extends Entity {
 				
 				if(dir == right_dir) {
 					px = 7;
-					angle = Math.atan2(my - (this.getY()+7 - Camera.y), mx - (this.getX()+7 - Camera.x));
+					angle = Math.atan2(my - (this.getY()+py - Camera.y), mx - (this.getX()+px - Camera.x));
 				}else {
 					px = 7;
-					angle = Math.atan2(my - (this.getY()+7 - Camera.y), mx - (this.getX()+7 - Camera.x));
+					angle = Math.atan2(my - (this.getY()+py - Camera.y), mx - (this.getX()+px - Camera.x));
 				}
-					
-				//CONTINUAR
-				//https://cursos.dankicode.com/campus/curso-dev-games/atirando-com-o-mouse
-				//16:29
 				
 				double dx = Math.cos(angle);
 				double dy = Math.sin(angle);
 				
 				Tiro tiro = new Tiro(this.getX()+px, this.getY()+py, 3, 3, null, dx , dy);
 				Game.tiros.add(tiro);
-//			}
+			}
 		}
 		
 		if(life <= 0) {
-			Game.entities.clear();
-			Game.enemies.clear();
-			Game.entities = new ArrayList<Entity>();
-			Game.enemies = new ArrayList<Enemy>();
-			Game.spritesheet = new Spritesheet("/spritesheet.png");
-			Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
-			Game.entities.add(Game.player);
-			Game.world = new World("/map.png");
-			return;
+			//GAMEOVER
 		}
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);

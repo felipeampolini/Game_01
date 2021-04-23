@@ -15,6 +15,8 @@ public class Entity {
 	public static BufferedImage AMMO_EN = Game.spritesheet.getSprite(6*16, 16, 16, 16);
 	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(7*16, 16, 16, 16);
 	public static BufferedImage ENEMY_EN2 = Game.spritesheet.getSprite(8*16, 16, 16, 16);
+	public static BufferedImage ENEMY_FEEDBACK = Game.spritesheet.getSprite(112, 32, 16, 16);
+	//https://cursos.dankicode.com/campus/curso-dev-games/destruindo-inimigos
 	public static BufferedImage GUN_RIGHT = Game.spritesheet.getSprite(128, 0, 16, 16);
 	public static BufferedImage GUN_LEFT = Game.spritesheet.getSprite(128+16, 0, 16, 16);
 	public static BufferedImage GUN_RIGHT_WHITE = Game.spritesheet.getSprite(2*16, 32, 16, 16);

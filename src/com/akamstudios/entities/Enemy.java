@@ -19,6 +19,10 @@ public class Enemy extends Entity{
 	
 	private BufferedImage[] sprites;
 
+	private int life = 3;
+	
+	private boolean isDamaged = false;
+	private int damageFrames = 10, damageCurrent = 0;
 	
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
@@ -69,6 +73,40 @@ public class Enemy extends Entity{
 				index = 0;
 		}
 		
+		collidingTiro();
+		
+		if(life <= 0) {
+			destroySelf();
+			return;
+		}
+		
+		if(isDamaged) {
+			damageCurrent++;
+			if(damageCurrent == damageFrames) {
+				damageCurrent = 0;
+				isDamaged = false;
+			}
+		}
+		
+	}
+	
+	public void destroySelf() {
+		Game.enemies.remove(this);
+		Game.entities.remove(this);
+	}
+	
+	public void collidingTiro(){		
+		for(int i = 0; i< Game.tiros.size(); i++) {			
+			Entity e = Game.tiros.get(i);
+			if(e instanceof Tiro) {				
+				if(Entity.isColidding(this, e)) {
+					isDamaged = true;
+					life--;
+					Game.tiros.remove(i);
+					return;
+				}				
+			}
+		}
 	}
 	
 	public boolean isCollidingWithPlayer() {
@@ -80,7 +118,6 @@ public class Enemy extends Entity{
 	
 	public boolean isColliding(int xnext, int ynext) {
 		Rectangle enemyCurrent = new Rectangle(xnext + maskx, ynext + masky, maskw, maskh);
-		
 	
 		for(int i=0; i< Game.enemies.size(); i++) {
 			Enemy e = Game.enemies.get(i);
@@ -95,9 +132,10 @@ public class Enemy extends Entity{
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(sprites[index], this.getX()- Camera.x, this.getY()- Camera.y, null);
-		
-		
+		if(!isDamaged)
+			g.drawImage(sprites[index], this.getX()- Camera.x, this.getY() - Camera.y, null);
+		else
+			g.drawImage(Entity.ENEMY_FEEDBACK, this.getX()- Camera.x, this.getY() - Camera.y, null);
 		
 //		g.setColor(Color.blue);
 //		g.fillRect(this.getX() + maskx - Camera.x, this.getY() + masky - Camera.y, maskw, maskh);

@@ -31,12 +31,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private static final long serialVersionUID = 1L;
 	public static JFrame frame;
 	private Thread thread;
-	
 	private boolean isRunning = true;
-	
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
 	private final int SCALE = 3;
+	
+	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
 	
 	private BufferedImage image;
 	
@@ -70,7 +70,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
-		world = new World("/map.png");
+		world = new World("/level1.png");
 	}
 	
 	public synchronized void start() {
@@ -112,6 +112,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		for(int i =0; i < tiros.size(); i++) {
 			tiros.get(i).tick();
 		}
+		
+		if(enemies.size() == 0) {
+			//Avançar proximo lvl
+			CUR_LEVEL++;
+			if(CUR_LEVEL > MAX_LEVEL) {
+				CUR_LEVEL = 1;
+			}
+			String newWorld = "level" + CUR_LEVEL + ".png";
+			World.restartGame(newWorld);
+		}
 	}
 		
 	public void render() {
@@ -146,7 +156,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
 		g.setColor(Color.white);
 		g.setFont(new Font("arial", Font.BOLD, 20));
-		g.drawString("Muni��o: "+ player.ammo, 600, 20);
+		if(player.municaoInfinita) {//∞
+			g.drawString("Munição:", 550, 20);
+			g.setFont(new Font("arial", Font.BOLD, 40));
+			g.drawString("∞", 640, 28);
+		}else
+			g.drawString("Munição: "+ player.ammo, 550, 20);
 		bs.show();
 	}
 	
@@ -171,7 +186,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			}
 			
 			if(System.currentTimeMillis() - timer >= 1000) {
-				System.out.println("FPS: "+frames);
+				//System.out.println("FPS: "+frames);
 				frames = 0;
 				timer += 1000;
 			}
