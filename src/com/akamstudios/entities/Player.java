@@ -31,8 +31,8 @@ public class Player extends Entity {
 	
 	public boolean tiro = false, mouseTiro = false;
 	
-	public boolean imortal = true;
-	public boolean municaoInfinita = true;
+	public boolean imortal = false;
+	public boolean municaoInfinita = false;
 	
 	public double life = 100, maxLife = 100;
 	public int mx, my;
@@ -183,6 +183,8 @@ public class Player extends Entity {
 		
 		if(life <= 0) {
 			//GAMEOVER
+			life = 0;
+			Game.gameState = "GAME_OVER";
 		}
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);
