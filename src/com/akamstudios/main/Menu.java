@@ -3,6 +3,7 @@ package com.akamstudios.main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class Menu {
 
@@ -11,7 +12,9 @@ public class Menu {
 	public int currentOption = 0;
 	public int maxOption = options.length - 1;
 	
-	public boolean up, down;
+	public boolean up, down, enter;
+	
+	public boolean pause = false;
 	
 	public void tick() {
 		if(up) {
@@ -26,14 +29,30 @@ public class Menu {
 			if(currentOption > maxOption)
 				currentOption = 0;
 		}
+		if(enter) {
+			enter = false;
+			switch(options[currentOption]) {
+				case "novo jogo":
+				case "continuar":
+					Game.gameState = "NORMAL";
+					pause = false;
+					break;
+				
+				case "sair":
+					System.exit(1);
+					break;
+			}
+		}
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(Color.black);
-		g.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
-		g.setColor(Color.RED);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(new Color(0, 0, 0, 100));
+		//g.setColor(Color.black);
+		g2.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
+		g.setColor(Color.BLUE);
 		g.setFont(new Font("arial", Font.BOLD, 36));
-		g.drawString(">Skel<", (Game.WIDTH * Game.SCALE)/2 - 50, (Game.HEIGHT * Game.SCALE)/2 - 180);
+		g.drawString(">Skel<", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 180);
 		
 		//Opcoes de menu
 		g.setColor(Color.white);
@@ -43,7 +62,10 @@ public class Menu {
 				g.setFont(new Font("arial", Font.BOLD, 24));
 				
 				g.drawString(">", (Game.WIDTH * Game.SCALE)/2 - 100, (Game.HEIGHT * Game.SCALE)/2 - 120);
-				g.drawString("Novo jogo", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 120);
+				if(!pause)
+					g.drawString("Novo jogo", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 120);
+				else
+					g.drawString("Continuar", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 120);
 				
 				g.setFont(new Font("arial", Font.PLAIN, 24));
 				
@@ -54,8 +76,11 @@ public class Menu {
 			case "carregar jogo":
 				g.setFont(new Font("arial", Font.PLAIN, 24));
 				
-				g.drawString("Novo jogo", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 120);
-				
+				if(!pause)
+					g.drawString("Novo jogo", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 120);
+				else
+					g.drawString("Continuar", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 120);
+					
 				g.setFont(new Font("arial", Font.BOLD, 24));
 				
 				g.drawString(">", (Game.WIDTH * Game.SCALE)/2 - 100, (Game.HEIGHT * Game.SCALE)/2 - 80);
@@ -68,7 +93,11 @@ public class Menu {
 			case "sair":
 				g.setFont(new Font("arial", Font.PLAIN, 24));
 				
-				g.drawString("Novo jogo", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 120);
+				if(!pause)
+					g.drawString("Novo jogo", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 120);
+				else
+					g.drawString("Continuar", (Game.WIDTH * Game.SCALE)/2 - 55, (Game.HEIGHT * Game.SCALE)/2 - 120);
+					
 				g.drawString("Carregar jogo", (Game.WIDTH * Game.SCALE)/2 - 70, (Game.HEIGHT * Game.SCALE)/2 - 80);
 				
 				g.setFont(new Font("arial", Font.BOLD, 24));
