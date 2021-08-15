@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.akamstudios.main.Game;
+import com.akamstudios.main.Sound;
 import com.akamstudios.world.Camera;
 import com.akamstudios.world.World;
 
@@ -57,6 +58,7 @@ public class Enemy extends Entity{
 			
 			if(Game.rand.nextInt(100) < 10) {
 				if(!Game.player.imortal) {
+					Sound.hurtEffect.play();
 					Game.player.life-=Game.rand.nextInt(3);
 					Game.player.isDamaged = true;
 				}
