@@ -56,14 +56,21 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public UI ui;
 	
 	public static String gameState = "MENU";
+	
 	private boolean showMessageGameOver = true;
-	private int framesGameOver = 0;
+	//FLAG PARA CONTROLAR O SOM DO JOGO
+	public static boolean som = false;
 	private boolean restartGame = false;
+
+	private int framesGameOver = 0;
 	
 	public Menu menu;
 	
+	public boolean saveGame = false;
+	
 	public Game() {
-		Sound.musicBackground.loop();
+		if(this.som)
+			Sound.musicBackground.loop();
 		
 		rand = new Random();
 		addKeyListener(this); 
@@ -118,6 +125,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public void tick() {
 		
 		if(gameState == "NORMAL") {
+			
+			if(this.saveGame) {
+				this.saveGame = false;
+				String[] opt1 = {"level", "vida"};
+				int[] opt2 = {this.CUR_LEVEL, (int)player.life};
+				Menu.saveGame(opt1, opt2, 10);
+				System.out.println("SALVOU O GAME");
+			}
 		
 			this.restartGame = false;
 			
@@ -250,6 +265,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
+		if(e.getKeyCode() == KeyEvent.VK_Z) {
+			player.jump = true;
+		}
+		
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT || 
 				e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = true;
@@ -292,6 +311,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			menu.pause = true;
 			gameState = "MENU";
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			if(gameState == "NORMAL")
+				this.saveGame = true;
 		}
 	}
 

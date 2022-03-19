@@ -37,18 +37,18 @@ public class Enemy extends Entity{
 		
 		if(!isCollidingWithPlayer()) {
 		
-			if((int)x < Game.player.getX() && World.isFree((int)(x+speed), this.getY())
+			if((int)x < Game.player.getX() && World.isFree((int)(x+speed), this.getY(), this.getZ())
 					&& !isColliding((int)(x+speed), this.getY())) {
 				x+=speed;
-			}else if((int)x > Game.player.getX() && World.isFree((int)(x-speed), this.getY())
+			}else if((int)x > Game.player.getX() && World.isFree((int)(x-speed), this.getY(), this.getZ())
 					&& !isColliding((int)(x-speed), this.getY())) {
 				x-=speed;
 			}
 			
-			if((int)y < Game.player.getY() && World.isFree(this.getX(),(int)(y+speed))
+			if((int)y < Game.player.getY() && World.isFree(this.getX(),(int)(y+speed), this.getZ())
 					&& !isColliding(this.getX(),(int)(y+speed))) {
 				y+=speed;
-			}else if((int)y > Game.player.getY() && World.isFree(this.getX(),(int)(y-speed))
+			}else if((int)y > Game.player.getY() && World.isFree(this.getX(),(int)(y-speed), this.getZ())
 					&& !isColliding(this.getX(),(int)(y-speed))) {
 				y-=speed;
 			}
@@ -58,7 +58,8 @@ public class Enemy extends Entity{
 			
 			if(Game.rand.nextInt(100) < 10) {
 				if(!Game.player.imortal) {
-					Sound.hurtEffect.play();
+					if(Game.som)
+						Sound.hurtEffect.play();
 					Game.player.life-=Game.rand.nextInt(3);
 					Game.player.isDamaged = true;
 				}
